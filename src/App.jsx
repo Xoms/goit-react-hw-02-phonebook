@@ -49,7 +49,7 @@ class App extends Component {
     return (
       <Container className="container feedback">
         <Title title="Phonebook"/>
-        <PhonesForm onContactAdd={this.onContactAdd}/>
+        <PhonesForm onContactAdd={this.onContactAdd} contacts={contacts}/>
         <Title title="Contacts" />
         <Filter onFilter={this.onFilter}/>
         <ContactsList onContactDelete={this.onContactDelete} contacts={visibleContacts}/>

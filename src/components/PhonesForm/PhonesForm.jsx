@@ -6,7 +6,8 @@ import './PhonesForm.styles.scss';
 class PhonesForm extends Component  {
   state = {
     name: '',
-    number: ''
+    number: '',
+    isExist: false
   }
 
   changeHandler = ({target}) => {
@@ -29,12 +30,25 @@ class PhonesForm extends Component  {
 
   submitHandler = (e) => {
     e.preventDefault();
+
+    if (this.isContactExists(this.state.name)){
+      this.setState({
+        isExist: true
+      })
+      return;
+    }
+
     const newRecord = this.makeRecord()
     this.setState({
       name: '',
-      number: ''
+      number: '',
+      isExist: false
       })
     this.props.onContactAdd(newRecord);
+  }
+
+  isContactExists(currName){
+    return (this.props.contacts.some( ({name}) => name === currName))
   }
 
   makeRecord(){
@@ -45,7 +59,7 @@ class PhonesForm extends Component  {
 
   render(){
     console.log(this.state);
-    const {name, number} = this.state
+    const {name, number, isExist} = this.state
     return (
       <form className="contacts-form" onSubmit={this.submitHandler}>
 
@@ -56,7 +70,7 @@ class PhonesForm extends Component  {
             id="contactName"
             value={name}/>
         </div>
-        
+
         <div className="contacts-form__group">
           <label className="contacts-form__label" htmlFor="contactNumber">Number</label>
           <input 
@@ -67,6 +81,8 @@ class PhonesForm extends Component  {
         </div>
 
         <button type="submit" className="contacts-form__submit-btn">Add contact</button>
+
+        {isExist && <span className="err-msg">This person is already in your contacts list</span>}
       </form>
     )
   }  
